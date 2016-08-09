@@ -130,7 +130,7 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
     public function lastInsertId($name = null)
     {
         if ($name !== null) {
-            $sql = "SELECT IDENT_CURRENT(".$this->quote($name).") AS LastInsertId";
+            $sql = "SELECT CAST (current_value AS int) AS LastInsertId FROM sys.sequences where name = {$this->quote($name)}";
             $stmt = $this->prepare($sql);
             $stmt->execute();
 
